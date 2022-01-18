@@ -5,11 +5,11 @@ export const PlayerCont = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
 
-  video {
-    width: 100%;
-    height: auto;
-  }
+export const PlayerVideo = styled.video`
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
 `;
 
 export const ControlsCont = styled.div`
@@ -19,6 +19,7 @@ export const ControlsCont = styled.div`
   position: absolute;
   bottom: 0;
   padding: 16px 0;
+  // background-color: rgba(232, 232, 232, 0.5);
   transition: opacity 0.5s;
   opacity: 0;
   z-index: 10;
@@ -74,19 +75,19 @@ export const ProgressBarInput = styled.input`
 
     // track
     &::-webkit-slider-runnable-track {
-      background-color: #6e6e6e;
+      background-color: ${({ trackColor }) => trackColor};
       border-radius: 20px;
       height: 8px;
     }
 
     &::-moz-range-track {
-      background-color: #6e6e6e;
+      background-color: ${({ trackColor }) => trackColor};
       border-radius: 20px;
       height: 8px;
     }
 
     &::-ms-track {
-      background-color: #6e6e6e;
+      background-color: ${({ trackColor }) => trackColor};
       border-radius: 20px;
       height: 8px;
     }
@@ -97,7 +98,7 @@ export const ProgressBarInput = styled.input`
       height: 16px;
       width: 16px;
       border-radius: 50%;
-      background: #fff;
+      background: ${({ thumbColor }) => thumbColor};
       margin: -4px 0;
       z-index: 3;
       position: relative;
@@ -108,7 +109,7 @@ export const ProgressBarInput = styled.input`
       height: 16px;
       width: 16px;
       border-radius: 50%;
-      background: #fff;
+      background: ${({ thumbColor }) => thumbColor};
       margin: -4px 0;
       z-index: 3;
       position: relative;
@@ -119,7 +120,7 @@ export const ProgressBarInput = styled.input`
       height: 18px;
       width: 18px;
       border-radius: 50%;
-      background: #fff;
+      background: ${({ thumbColor }) => thumbColor};
       margin: -4px 0;
       z-index: 3;
       position: relative;
@@ -131,7 +132,7 @@ export const ProgressBarInput = styled.input`
       content: '';
       width: ${({ progressBarWidth }) => progressBarWidth};
       height: 8px;
-      background-color: #f26f21;
+      background-color: ${({ progressColor }) => progressColor};
       border-top-left-radius: 20px;
       border-bottom-left-radius: 20px;
       position: absolute;
@@ -142,7 +143,7 @@ export const ProgressBarInput = styled.input`
     &::-moz-range-progress {
       width: ${({ progressBarWidth }) => progressBarWidth};
       height: 8px;
-      background-color: #f26f21;
+      background-color: ${({ progressColor }) => progressColor};
       border-top-left-radius: 20px;
       border-bottom-left-radius: 20px;
       position: absolute;
@@ -153,7 +154,7 @@ export const ProgressBarInput = styled.input`
     &::-ms-fill-lower {
       width: ${({ progressBarWidth }) => progressBarWidth};
       height: 8px;
-      background-color: #f26f21;
+      background-color: ${({ progressColor }) => progressColor};
       border-top-left-radius: 20px;
       border-bottom-left-radius: 20px;
       position: absolute;
