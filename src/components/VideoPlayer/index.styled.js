@@ -13,7 +13,7 @@ export const PlayerVideo = styled.video`
 `;
 
 export const ControlsCont = styled.div`
-  width: 100%;
+  width: ${({ width }) => width};
   display: flex;
   align-items: center;
   position: absolute;
@@ -39,11 +39,17 @@ export const ControlBtn = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: relative;
 
   svg {
     height: 32px;
     width: 32px;
   }
+`;
+
+export const SkipByText = styled.span`
+  font-size: 10px;
+  position: absolute;
 `;
 
 export const ProgressBarCont = styled.div`
@@ -167,7 +173,7 @@ export const ProgressBarInput = styled.input`
       content: '';
       width: ${({ bufferBarWidth }) => bufferBarWidth};
       height: 8px;
-      background-color: #dcdcdc;
+      background-color: ${({ bufferColor }) => bufferColor};
       border-radius: 20px;
       position: absolute;
       top: 0;

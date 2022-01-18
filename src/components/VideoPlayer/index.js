@@ -1,47 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { IoPlayOutline, IoPauseOutline, IoScanOutline } from 'react-icons/io5';
 import { BsArrowCounterclockwise, BsArrowClockwise } from 'react-icons/bs';
+import { defaultProps } from '../../props';
 import { getTimeAsMinSec } from '../../utils/utils';
 import {
   PlayerCont,
   PlayerVideo,
   ControlsCont,
   ControlBtn,
+  SkipByText,
   ProgressBarCont,
   ProgressBarInput,
   ProgressBarText,
 } from './index.styled';
 
-function VideoPlayer({
-  // functionality settings
-  mp4Url = 'https://tra-ww000-cp.akamaized.net/HGO-TW-001-A1881/videos/misc/mp4/trailer/HGO-TW-001-A1881-Z05-406p-800k.mp4',
-  forwardByDuration = 10,
-  backwardByDuration = 10,
-  isShowControls = true,
-  isPreload = true,
-  isLoop = false,
-  isMuted = false,
-
-  // functionality callbacks
-  onPlayCallback,
-  onPauseCallback,
-  onEndCallback,
-  onSeekCallback,
-  onSkippedCallback,
-
-  // css settings
-  videoWidth = '100%',
-  videoHeight = 'auto',
-  playerContClassName,
-  playerVideoClassName,
-  controlsContClassName,
-  controlsBtnClassName,
-  progressBarContClassName,
-  progressBarClassName,
-  progressBarTrackColor = '#6e6e6e',
-  progressBarThumbColor = '#fff',
-  progressBarProgressColor = '#f26f21',
-}) {
+function VideoPlayer(props) {
   const playerCont = useRef(null);
   const player = useRef(null);
 
@@ -78,14 +51,14 @@ function VideoPlayer({
     if (isPlaying) {
       player.current.pause();
 
-      if (onPlayCallback) {
-        onPauseCallback();
+      if (props.onPlayCallback) {
+        props.onPauseCallback();
       }
     } else {
       player.current.play();
 
-      if (onPlayCallback) {
-        onPlayCallback();
+      if (props.onPlayCallback) {
+        props.onPlayCallback();
       }
     }
 
@@ -131,8 +104,8 @@ function VideoPlayer({
     if (e.target.ended) {
       setIsPlaying(false);
 
-      if (onEndCallback) {
-        onEndCallback();
+      if (props.onEndCallback) {
+        props.onEndCallback();
       }
     }
 
@@ -149,8 +122,8 @@ function VideoPlayer({
     const updatedProgress = (updatedProgressWidth / 100) * player.current.duration;
     const updatedProgressText = getTimeAsMinSec(updatedProgress);
 
-    if (onSeekCallback) {
-      onSeekCallback(updatedProgressText);
+    if (props.onSeekCallback) {
+      props.onSeekCallback(updatedProgressText);
     }
 
     player.current.currentTime = updatedProgress;
@@ -178,8 +151,8 @@ function VideoPlayer({
       return;
     }
 
-    if (onSkippedCallback) {
-      onSkippedCallback(skipBy);
+    if (props.onSkippedCallback) {
+      props.onSkippedCallback(skipBy);
     }
 
     player.current.currentTime = updatedCurrentTime;
@@ -188,45 +161,48 @@ function VideoPlayer({
   };
 
   return (
-    <PlayerCont ref={playerCont} className={playerContClassName}>
+    <PlayerCont ref={playerCont} className={props.playerContClassName}>
       <PlayerVideo
         ref={player}
-        className={playerVideoClassName}
-        width={videoWidth}
-        height={videoHeight}
-        preload={isPreload.toString()}
-        muted={isMuted}
-        loop={isLoop}
+        className={props.playerVideoClassName}
+        width={!isFullScreen ? props.videoWidth : '100%'}
+        height={!isFullScreen ? props.videoHeight : 'auto'}
+        preload={props.isPreload.toString()}
+        muted={props.isMuted}
+        loop={props.isLoop}
         onClick={onTogglePlay}
         onLoadedMetadata={onLoadVideo}
-        onTimeUpdate={onUpdateProgressBar}>
-        <source src={mp4Url} type="video/mp4" />
+        onTimeUpdate={onUpdateProgressBar}
+      >
+        <source src={props.url} type="video/mp4" />
         <track kind="captions" />
       </PlayerVideo>
 
-      {isShowControls && (
-        <ControlsCont className={controlsContClassName}>
-          <ControlBtn type="button" className={controlsBtnClassName} onClick={onTogglePlay}>
+      {props.isShowControls && (
+        <ControlsCont
+          className={props.controlsContClassName}
+          width={!isFullScreen ? props.videoWidth : '100%'}>
+          <ControlBtn type="button" className={props.controlsBtnClassName} onClick={onTogglePlay}>
             {isPlaying ? <IoPauseOutline /> : <IoPlayOutline />}
           </ControlBtn>
 
           <ControlBtn
             type="button"
-            className={controlsBtnClassName}
-            onClick={() => onSkipByDuration(-Math.abs(backwardByDuration))}
-          >
+            className={props.controlsBtnClassName}
+            onClick={() => onSkipByDuration(-Math.abs(props.backwardByDuration))}>
             <BsArrowCounterclockwise />
+            <SkipByText>{-Math.abs(props.backwardByDuration)}</SkipByText>
           </ControlBtn>
 
           <ControlBtn
             type="button"
-            className={controlsBtnClassName}
-            onClick={() => onSkipByDuration(forwardByDuration)}
-          >
+            className={props.controlsBtnClassName}
+            onClick={() => onSkipByDuration(Math.abs(props.forwardByDuration))}>
             <BsArrowClockwise />
+            <SkipByText>{Math.abs(props.forwardByDuration)}</SkipByText>
           </ControlBtn>
 
-          <ProgressBarCont className={progressBarContClassName}>
+          <ProgressBarCont className={props.progressBarContClassName}>
             <ProgressBarText>{videoProgressText}</ProgressBarText>
             <ProgressBarInput
               type="range"
@@ -237,15 +213,20 @@ function VideoPlayer({
               progressBarWidth={`${progressBarWidth}%`}
               bufferBarWidth={`${bufferBarWidth}%`}
               onChange={onChangeVideoProgress}
-              className={progressBarClassName}
-              trackColor={progressBarTrackColor}
-              thumbColor={progressBarThumbColor}
-              progressColor={progressBarProgressColor}
+              className={props.progressBarClassName}
+              trackColor={props.progressBarTrackColor}
+              thumbColor={props.progressBarThumbColor}
+              progressColor={props.progressBarProgressColor}
+              bufferColor={props.progressBarBufferColor}
             />
             <ProgressBarText>{videoDurationText}</ProgressBarText>
           </ProgressBarCont>
 
-          <ControlBtn type="button" className={controlsBtnClassName} onClick={onToggleFullScreen}>
+          <ControlBtn
+            type="button"
+            className={props.controlsBtnClassName}
+            onClick={onToggleFullScreen}
+          >
             <IoScanOutline />
           </ControlBtn>
         </ControlsCont>
@@ -253,5 +234,7 @@ function VideoPlayer({
     </PlayerCont>
   );
 }
+
+VideoPlayer.defaultProps = defaultProps;
 
 export default VideoPlayer;

@@ -1,7 +1,25 @@
+import { useState } from 'react';
 import VideoPlayer from './components/VideoPlayer/index';
+import VideoPlayerSettings from './components/VideoPlayerSettings/index';
+import { defaultProps } from './props';
 import { GlobalStyle } from './Global.styled';
 
 function App() {
+  const [settings, setSettings] = useState(defaultProps);
+
+  const onChangeSettings = (event) => {
+    const { name, value, checked, type } = event.target;
+
+    setSettings((prevSettings) => ({
+      ...prevSettings,
+      [name]: type !== 'checkbox' ? value : checked,
+    }));
+  };
+
+  const onResetSettings = () => {
+    setSettings(defaultProps);
+  };
+
   const onPlay = () => {
     console.log('Video has started playing!');
   };
@@ -26,18 +44,22 @@ function App() {
     <div className="App">
       <GlobalStyle />
       <VideoPlayer
-        mp4Url="https://tra-ww000-cp.akamaized.net/HGO-TW-001-A1881/videos/misc/mp4/trailer/HGO-TW-001-A1881-Z05-406p-800k.mp4"
-        forwardByDuration={10}
-        backwardByDuration={10}
-        isShowControls
-        isPreload
-        isLoop={false}
-        isMuted={false}
+        {...settings}
+        videoWidth="50vw"
+        videoHeight="auto"
         onPlayCallback={onPlay}
         onPauseCallback={onPause}
         onEndCallback={onEnd}
         onSeekCallback={onSeek}
         onSkippedCallback={onSkipped}
+      />
+
+      <VideoPlayerSettings
+        {...settings}
+        videoWidth="50vw"
+        videoHeight="auto"
+        onChangeSettings={onChangeSettings}
+        onResetSettings={onResetSettings}
       />
     </div>
   );

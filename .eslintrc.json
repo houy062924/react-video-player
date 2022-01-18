@@ -51,6 +51,8 @@
       }
     ],
     "react/jsx-closing-bracket-location": [1, "tag-aligned"],
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "react/destructuring-assignment": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }
