@@ -50,6 +50,7 @@
         "endOfLine": "auto"
       }
     ],
-    "react/jsx-closing-bracket-location": [1, "tag-aligned"]
+    "react/jsx-closing-bracket-location": [1, "tag-aligned"],
+    "react/prop-types": "off"
   }
 }
