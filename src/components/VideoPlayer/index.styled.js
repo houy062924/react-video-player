@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const PlayerCont = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   video {
     width: 100%;
@@ -18,6 +21,7 @@ export const ControlsCont = styled.div`
   padding: 16px 0;
   transition: opacity 0.5s;
   opacity: 0;
+  z-index: 10;
 
   ${PlayerCont}:hover & {
     opacity: 1;

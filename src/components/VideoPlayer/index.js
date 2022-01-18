@@ -12,6 +12,7 @@ import {
 } from './index.styled';
 
 function VideoPlayer() {
+  const playerCont = useRef(null);
   const player = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -20,6 +21,23 @@ function VideoPlayer() {
   const [videoDurationText, setVideoDuration] = useState('00:00');
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   const [bufferBarWidth, setBufferBarWidth] = useState(0);
+
+  useEffect(() => {
+    const onCloseFullScreenState = () => {
+      // handle exiting fullscreen with escape key
+      if (!document.fullscreenElement) {
+        setIsFullScreen((prevIsFullScreen) =>
+          prevIsFullScreen === true ? false : prevIsFullScreen
+        );
+      }
+    };
+
+    window.addEventListener('fullscreenchange', onCloseFullScreenState);
+
+    return () => {
+      window.removeEventListener('fullscreenchange', onCloseFullScreenState);
+    };
+  }, []);
 
   const onLoadVideo = () => {
     const duration = getTimeAsMinSec(player.current.duration);
@@ -37,17 +55,34 @@ function VideoPlayer() {
   };
 
   const onToggleFullScreen = () => {
-    if (player.current.requestFullscreen) {
-      player.current.requestFullscreen();
-    } else if (player.webkitRequestFullscreen) {
-      player.current.webkitRequestFullscreen();
-    } else if (player.msRequestFullScreen) {
-      player.current.msRequestFullScreen();
-    } else if (player.mozRequestFullScreen) {
-      player.current.mozRequestFullScreen();
+    if (isFullScreen) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+
+      setIsFullScreen((prevIsFullScreen) => !prevIsFullScreen);
+      return;
     }
 
-    setIsFullScreen((prevIsFullScreen) => !prevIsFullScreen);
+    if (!isFullScreen) {
+      if (playerCont.current.requestFullscreen) {
+        playerCont.current.requestFullscreen();
+      } else if (playerCont.webkitRequestFullscreen) {
+        playerCont.current.webkitRequestFullscreen();
+      } else if (playerCont.msRequestFullScreen) {
+        playerCont.current.msRequestFullScreen();
+      } else if (playerCont.mozRequestFullScreen) {
+        playerCont.current.mozRequestFullScreen();
+      }
+
+      setIsFullScreen((prevIsFullScreen) => !prevIsFullScreen);
+    }
   };
 
   const onUpdateProgressBar = (e) => {
@@ -103,7 +138,7 @@ function VideoPlayer() {
   };
 
   return (
-    <PlayerCont>
+    <PlayerCont ref={playerCont}>
       <video
         ref={player}
         preload="true"
