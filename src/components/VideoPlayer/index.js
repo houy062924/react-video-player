@@ -11,7 +11,20 @@ import {
   ProgressBarText,
 } from './index.styled';
 
-function VideoPlayer() {
+function VideoPlayer({
+  mp4Url = 'https://tra-ww000-cp.akamaized.net/HGO-TW-001-A1881/videos/misc/mp4/trailer/HGO-TW-001-A1881-Z05-406p-800k.mp4',
+  forwardByDuration = 10,
+  backwardByDuration = 10,
+  isShowControls = true,
+  isPreload = true,
+  isLoop = false,
+  isMuted = false,
+  onPlayCallback,
+  onPauseCallback,
+  onEndCallback,
+  onSeekCallback,
+  onSkippedCallback,
+}) {
   const playerCont = useRef(null);
   const player = useRef(null);
 
@@ -47,8 +60,16 @@ function VideoPlayer() {
   const onTogglePlay = () => {
     if (isPlaying) {
       player.current.pause();
+
+      if (onPlayCallback) {
+        onPauseCallback();
+      }
     } else {
       player.current.play();
+
+      if (onPlayCallback) {
+        onPlayCallback();
+      }
     }
 
     setIsPlaying((prevIsPlaying) => !prevIsPlaying);
@@ -92,6 +113,10 @@ function VideoPlayer() {
 
     if (e.target.ended) {
       setIsPlaying(false);
+
+      if (onEndCallback) {
+        onEndCallback();
+      }
     }
 
     if (buffered !== bufferBarWidth) {
@@ -106,6 +131,10 @@ function VideoPlayer() {
     const updatedProgressWidth = e.target.value;
     const updatedProgress = (updatedProgressWidth / 100) * player.current.duration;
     const updatedProgressText = getTimeAsMinSec(updatedProgress);
+
+    if (onSeekCallback) {
+      onSeekCallback(updatedProgressText);
+    }
 
     player.current.currentTime = updatedProgress;
     setProgressBarWidth(updatedProgressWidth);
@@ -132,6 +161,10 @@ function VideoPlayer() {
       return;
     }
 
+    if (onSkippedCallback) {
+      onSkippedCallback(skipBy);
+    }
+
     player.current.currentTime = updatedCurrentTime;
     setProgressBarWidth(progressWidth);
     setVideoProgressText(progressText);
@@ -141,49 +174,51 @@ function VideoPlayer() {
     <PlayerCont ref={playerCont}>
       <video
         ref={player}
-        preload="true"
+        preload={isPreload.toString()}
+        muted={isMuted}
+        loop={isLoop}
         onClick={onTogglePlay}
         onLoadedMetadata={onLoadVideo}
-        onTimeUpdate={onUpdateProgressBar}>
-        <source
-          src="https://tra-ww000-cp.akamaized.net/HGO-TW-001-A1881/videos/misc/mp4/trailer/HGO-TW-001-A1881-Z05-406p-800k.mp4"
-          type="video/mp4"
-        />
+        onTimeUpdate={onUpdateProgressBar}
+      >
+        <source src={mp4Url} type="video/mp4" />
         <track kind="captions" />
       </video>
 
-      <ControlsCont>
-        <ControlBtn type="button" onClick={onTogglePlay}>
-          {isPlaying ? <IoPauseOutline /> : <IoPlayOutline />}
-        </ControlBtn>
+      {isShowControls && (
+        <ControlsCont>
+          <ControlBtn type="button" onClick={onTogglePlay}>
+            {isPlaying ? <IoPauseOutline /> : <IoPlayOutline />}
+          </ControlBtn>
 
-        <ControlBtn type="button" onClick={() => onSkipByDuration(-10)}>
-          <BsArrowCounterclockwise />
-        </ControlBtn>
+          <ControlBtn type="button" onClick={() => onSkipByDuration(-Math.abs(backwardByDuration))}>
+            <BsArrowCounterclockwise />
+          </ControlBtn>
 
-        <ControlBtn type="button" onClick={() => onSkipByDuration(10)}>
-          <BsArrowClockwise />
-        </ControlBtn>
+          <ControlBtn type="button" onClick={() => onSkipByDuration(forwardByDuration)}>
+            <BsArrowClockwise />
+          </ControlBtn>
 
-        <ProgressBarCont>
-          <ProgressBarText>{videoProgressText}</ProgressBarText>
-          <ProgressBarInput
-            type="range"
-            min="0"
-            max="100"
-            step="1"
-            value={progressBarWidth}
-            progressBarWidth={`${progressBarWidth}%`}
-            bufferBarWidth={`${bufferBarWidth}%`}
-            onChange={onChangeVideoProgress}
-          />
-          <ProgressBarText>{videoDurationText}</ProgressBarText>
-        </ProgressBarCont>
+          <ProgressBarCont>
+            <ProgressBarText>{videoProgressText}</ProgressBarText>
+            <ProgressBarInput
+              type="range"
+              min="0"
+              max="100"
+              step="1"
+              value={progressBarWidth}
+              progressBarWidth={`${progressBarWidth}%`}
+              bufferBarWidth={`${bufferBarWidth}%`}
+              onChange={onChangeVideoProgress}
+            />
+            <ProgressBarText>{videoDurationText}</ProgressBarText>
+          </ProgressBarCont>
 
-        <ControlBtn type="button" onClick={onToggleFullScreen}>
-          <IoScanOutline />
-        </ControlBtn>
-      </ControlsCont>
+          <ControlBtn type="button" onClick={onToggleFullScreen}>
+            <IoScanOutline />
+          </ControlBtn>
+        </ControlsCont>
+      )}
     </PlayerCont>
   );
 }
