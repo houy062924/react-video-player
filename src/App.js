@@ -3,6 +3,7 @@ import VideoPlayer from './components/VideoPlayer/index';
 import VideoPlayerSettings from './components/VideoPlayerSettings/index';
 import { defaultProps } from './props';
 import { GlobalStyle } from './Global.styled';
+import './App.css';
 
 function App() {
   const [settings, setSettings] = useState(defaultProps);
@@ -45,8 +46,7 @@ function App() {
       <GlobalStyle />
       <VideoPlayer
         {...settings}
-        videoWidth="50vw"
-        videoHeight="auto"
+        playerContClassName="player-cont"
         onPlayCallback={onPlay}
         onPauseCallback={onPause}
         onEndCallback={onEnd}
@@ -56,8 +56,6 @@ function App() {
 
       <VideoPlayerSettings
         {...settings}
-        videoWidth="50vw"
-        videoHeight="auto"
         onChangeSettings={onChangeSettings}
         onResetSettings={onResetSettings}
       />

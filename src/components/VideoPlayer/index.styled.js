@@ -30,7 +30,7 @@ export const ControlsCont = styled.div`
   }
 `;
 
-export const ControlBtn = styled.button`
+export const ControlBtn = styled.div`
   color: #fff;
   margin: 0 15px;
   padding: 0;
@@ -102,33 +102,33 @@ export const ProgressBarInput = styled.input`
     // thumb
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      height: 16px;
-      width: 16px;
+      height: 20px;
+      width: 20px;
       border-radius: 50%;
       background: ${({ thumbColor }) => thumbColor};
-      margin: -4px 0;
+      margin: -6px 0;
       z-index: 3;
       position: relative;
       cursor: pointer;
     }
 
     &::-moz-range-thumb {
-      height: 16px;
-      width: 16px;
+      height: 20px;
+      width: 20px;
       border-radius: 50%;
       background: ${({ thumbColor }) => thumbColor};
-      margin: -4px 0;
+      margin: -6px 0;
       z-index: 3;
       position: relative;
       cursor: pointer;
     }
 
     &::-ms-thumb {
-      height: 18px;
-      width: 18px;
+      height: 20px;
+      width: 20px;
       border-radius: 50%;
       background: ${({ thumbColor }) => thumbColor};
-      margin: -4px 0;
+      margin: -6px 0;
       z-index: 3;
       position: relative;
       cursor: pointer;
