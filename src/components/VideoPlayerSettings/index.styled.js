@@ -3,6 +3,10 @@ import styled from 'styled-components';
 export const VideoPlayerSettingsCont = styled.div`
   width: 80vw;
   margin: 20px auto 64px auto;
+
+  @media (max-width: 520px) {
+    width: 90vw;
+  }
 `;
 
 export const SettingsHeaderBlock = styled.div`
@@ -13,6 +17,7 @@ export const SettingsHeaderBlock = styled.div`
 
   h1 {
     margin: 0 0 48px 0;
+    text-align: center;
   }
 
   h2 {
@@ -30,6 +35,15 @@ export const SettingsBodyBlock = styled.div`
   &:last-child {
     border-bottom: none;
   }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 16px 12px;
+
+    h3 {
+      padding-bottom: 24px;
+    }
+  }
 `;
 
 export const SettingBodyBtn = styled.button`
@@ -46,6 +60,7 @@ export const BlockValues = styled.div`
     margin-bottom: 16px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
   }
 
   input {
@@ -54,5 +69,6 @@ export const BlockValues = styled.div`
 
   span {
     line-height: 26px;
+    flex-shrink: 0;
   }
 `;

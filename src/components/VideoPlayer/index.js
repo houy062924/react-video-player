@@ -200,12 +200,11 @@ function VideoPlayer(props) {
           className={props.controlsContClassName}
           width={!isFullScreen ? props.videoWidth : '100%'}
         >
-          <ControlBtn type="button" className={props.controlsBtnClassName} onClick={onTogglePlay}>
+          <ControlBtn className={props.controlsBtnClassName} onClick={onTogglePlay}>
             {isPlaying ? <IoPauseOutline /> : <IoPlayOutline />}
           </ControlBtn>
 
           <ControlBtn
-            type="button"
             className={props.controlsBtnClassName}
             onClick={() => onSkipByDuration(-Math.abs(props.backwardByDuration))}
           >
@@ -214,7 +213,6 @@ function VideoPlayer(props) {
           </ControlBtn>
 
           <ControlBtn
-            type="button"
             className={props.controlsBtnClassName}
             onClick={() => onSkipByDuration(Math.abs(props.forwardByDuration))}
           >
@@ -242,10 +240,7 @@ function VideoPlayer(props) {
             <ProgressBarText>{videoDurationText}</ProgressBarText>
           </ProgressBarCont>
 
-          <ControlBtn
-            type="button"
-            className={props.controlsBtnClassName}
-            onClick={onToggleFullScreen}>
+          <ControlBtn className={props.controlsBtnClassName} onClick={onToggleFullScreen}>
             <IoScanOutline />
           </ControlBtn>
         </ControlsCont>

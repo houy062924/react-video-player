@@ -32,7 +32,7 @@ export const ControlsCont = styled.div`
 
 export const ControlBtn = styled.div`
   color: #fff;
-  margin: 0 15px;
+  margin: 0 1.5%;
   padding: 0;
   background: transparent;
   border: 0;
@@ -41,10 +41,12 @@ export const ControlBtn = styled.div`
   justify-content: center;
   cursor: pointer;
   position: relative;
+  width: 4%;
+  max-width: 32px;
 
   svg {
-    height: 32px;
-    width: 32px;
+    height: 100%;
+    width: 100%;
   }
 `;
 
