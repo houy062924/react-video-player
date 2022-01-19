@@ -42,6 +42,22 @@ function VideoPlayer(props) {
     };
   }, []);
 
+  useEffect(() => {
+    const onResetDefaultState = () => {
+      setIsPlaying(false);
+      setIsFullScreen(false);
+      setVideoProgressText('00:00');
+      setVideoDuration('00:00');
+      setProgressBarWidth(0);
+      setBufferBarWidth(0);
+    };
+
+    if (player) {
+      player.current.load();
+      onResetDefaultState();
+    }
+  }, [props.url]);
+
   const onLoadVideo = () => {
     const duration = getTimeAsMinSec(player.current.duration);
     setVideoDuration(duration);
@@ -97,6 +113,8 @@ function VideoPlayer(props) {
   };
 
   const onUpdateProgressBar = (e) => {
+    if (e.target.readyState !== 4) return;
+
     const progressWidth = (e.target.currentTime / e.target.duration) * 100;
     const progress = getTimeAsMinSec(e.target.currentTime);
     const buffered = (e.target.buffered.end(0) / e.target.duration) * 100;
@@ -172,8 +190,7 @@ function VideoPlayer(props) {
         loop={props.isLoop}
         onClick={onTogglePlay}
         onLoadedMetadata={onLoadVideo}
-        onTimeUpdate={onUpdateProgressBar}
-      >
+        onTimeUpdate={onUpdateProgressBar}>
         <source src={props.url} type="video/mp4" />
         <track kind="captions" />
       </PlayerVideo>
@@ -181,7 +198,8 @@ function VideoPlayer(props) {
       {props.isShowControls && (
         <ControlsCont
           className={props.controlsContClassName}
-          width={!isFullScreen ? props.videoWidth : '100%'}>
+          width={!isFullScreen ? props.videoWidth : '100%'}
+        >
           <ControlBtn type="button" className={props.controlsBtnClassName} onClick={onTogglePlay}>
             {isPlaying ? <IoPauseOutline /> : <IoPlayOutline />}
           </ControlBtn>
@@ -189,7 +207,8 @@ function VideoPlayer(props) {
           <ControlBtn
             type="button"
             className={props.controlsBtnClassName}
-            onClick={() => onSkipByDuration(-Math.abs(props.backwardByDuration))}>
+            onClick={() => onSkipByDuration(-Math.abs(props.backwardByDuration))}
+          >
             <BsArrowCounterclockwise />
             <SkipByText>{-Math.abs(props.backwardByDuration)}</SkipByText>
           </ControlBtn>
@@ -197,7 +216,8 @@ function VideoPlayer(props) {
           <ControlBtn
             type="button"
             className={props.controlsBtnClassName}
-            onClick={() => onSkipByDuration(Math.abs(props.forwardByDuration))}>
+            onClick={() => onSkipByDuration(Math.abs(props.forwardByDuration))}
+          >
             <BsArrowClockwise />
             <SkipByText>{Math.abs(props.forwardByDuration)}</SkipByText>
           </ControlBtn>
@@ -225,8 +245,7 @@ function VideoPlayer(props) {
           <ControlBtn
             type="button"
             className={props.controlsBtnClassName}
-            onClick={onToggleFullScreen}
-          >
+            onClick={onToggleFullScreen}>
             <IoScanOutline />
           </ControlBtn>
         </ControlsCont>

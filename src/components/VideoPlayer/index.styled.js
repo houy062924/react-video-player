@@ -5,6 +5,7 @@ export const PlayerCont = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: black;
 `;
 
 export const PlayerVideo = styled.video`
