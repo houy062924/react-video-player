@@ -1,10 +1,13 @@
 {
   "files": {
-    "main.js": "/react-video-player/static/js/main.caf8e3dc.js",
+    "main.css": "/react-video-player/static/css/main.afe3c0e6.css",
+    "main.js": "/react-video-player/static/js/main.9366fd2e.js",
     "index.html": "/react-video-player/index.html",
-    "main.caf8e3dc.js.map": "/react-video-player/static/js/main.caf8e3dc.js.map"
+    "main.afe3c0e6.css.map": "/react-video-player/static/css/main.afe3c0e6.css.map",
+    "main.9366fd2e.js.map": "/react-video-player/static/js/main.9366fd2e.js.map"
   },
   "entrypoints": [
-    "static/js/main.caf8e3dc.js"
+    "static/css/main.afe3c0e6.css",
+    "static/js/main.9366fd2e.js"
   ]
 }
