@@ -1,160 +1,178 @@
 import { VideoPlayerSettingsCont } from './index.styled';
 
+const videoUrlOptions = [
+  {
+    id: 'harryPotter',
+    url: 'https://tra-ww000-cp.akamaized.net/HGO-TW-001-A1881/videos/misc/mp4/trailer/HGO-TW-001-A1881-Z05-406p-800k.mp4',
+    name: 'Harry Potter 20th Anniversay - Return to Hogwarts',
+    label: "I'm an Harry Potter fan!",
+  },
+  {
+    id: 'goldLeaf',
+    url: 'https://tra-ww000-cp.akamaized.net/PTS-TW-D0006-01/videos/misc/mp4/trailer/PTS-TW-D0006-01-Z01-406p-800k.mp4',
+    name: 'Gold Leaf',
+    label: 'Taiwanese series are the best!',
+  },
+  {
+    id: 'dune',
+    url: 'https://tra-ww000-cp.akamaized.net/HGO-TW-001-A1783/videos/misc/mp4/trailer/HGO-TW-001-A1783-Z01-406p-800k.mp4',
+    name: 'Dune',
+    label: 'Recommend me anything!',
+  },
+];
+
+const videoSettings = {
+  videoUrl: [
+    {
+      id: 'isShowControls',
+      endLabel: 'Show Video Player Controls',
+      inputType: 'radio',
+      options: videoUrlOptions,
+    },
+  ],
+  videoConfigs: [
+    {
+      id: 'isShowControls',
+      endLabel: 'Show Video Player Controls',
+      inputType: 'checkbox',
+    },
+    {
+      id: 'isPreload',
+      endLabel: 'Preload Video',
+      inputType: 'checkbox',
+    },
+    {
+      id: 'isLoop',
+      endLabel: 'Loop Video',
+      inputType: 'checkbox',
+    },
+    {
+      id: 'isMuted',
+      endLabel: 'Mute Video',
+      inputType: 'checkbox',
+    },
+  ],
+  videoPlaySettings: [
+    {
+      id: 'backwardByDuration',
+      frontLabel: 'Backward Duration',
+      endLabel: '(sec)',
+      inputType: 'number',
+      min: 0,
+      max: 100,
+    },
+    {
+      id: 'forwardByDuration',
+      frontLabel: 'Forward Duration',
+      endLabel: '(sec)',
+      inputType: 'number',
+      min: 0,
+      max: 100,
+    },
+  ],
+  videoStyling: [
+    {
+      id: 'videoWidth',
+      frontLabel: 'Width Of Video',
+      inputType: 'text',
+    },
+    {
+      id: 'videoHeight',
+      frontLabel: 'Height Of Video',
+      inputType: 'text',
+    },
+    {
+      id: 'progressBarTrackColor',
+      frontLabel: 'Color of Video Track',
+      inputType: 'color',
+    },
+    {
+      id: 'progressBarThumbColor',
+      frontLabel: 'Color of Video Thumb',
+      inputType: 'color',
+    },
+    {
+      id: 'progressBarProgressColor',
+      frontLabel: 'Color of Video Progress',
+      inputType: 'color',
+    },
+    {
+      id: 'progressBarBufferColor',
+      frontLabel: 'Color of Video Buffer',
+      inputType: 'color',
+    },
+  ],
+};
+
 function VideoPlayerSettings({ onChangeSettings, onResetSettings, ...rest }) {
+  const getCurrentVideoName = (url) => {
+    const selected = videoUrlOptions.find((el) => el.url === url);
+    return selected.name;
+  };
+
+  const getGroupLabelText = (groupLabel) => {
+    switch (groupLabel) {
+      case 'videoUrl':
+        return 'Video Url Settings';
+      case 'videoConfigs':
+        return 'Video Configuration Settings';
+      case 'videoPlaySettings':
+        return 'Video Play Settings';
+      case 'videoStyling':
+        return 'Video Styling Settings';
+      default:
+        return '';
+    }
+  };
+
   return (
     <VideoPlayerSettingsCont>
       <form>
         <div>
-          <label htmlFor="url">
-            MP4 Url
-            <input type="text" id="url" name="url" value={rest.url} onChange={onChangeSettings} />
-          </label>
+          <p>{`Currently Playing: ${getCurrentVideoName(rest.url)}`}</p>
+
+          {videoUrlOptions.map((option) => (
+            <label htmlFor={option.id} key={option.id}>
+              <input
+                type="radio"
+                id={option.id}
+                name="url"
+                checked={rest.url === option.url}
+                value={option.url}
+                onChange={onChangeSettings}
+              />
+              {option.label}
+            </label>
+          ))}
         </div>
 
         <div>
-          <label htmlFor="backwardByDuration">
-            Backward Duration
-            <input
-              type="number"
-              min="0"
-              max="100"
-              id="backwardByDuration"
-              name="backwardByDuration"
-              value={rest.backwardByDuration}
-              onChange={onChangeSettings}
-            />
-            (secs)
-          </label>
+          {Object.keys(videoSettings).map((settingKey) => {
+            const settings = videoSettings[settingKey];
 
-          <label htmlFor="forwardByDuration">
-            Forward Duration
-            <input
-              type="number"
-              min="0"
-              max="100"
-              id="forwardByDuration"
-              name="forwardByDuration"
-              value={rest.forwardByDuration}
-              onChange={onChangeSettings}
-            />
-            (secs)
-          </label>
-        </div>
+            return (
+              <div key={settingKey}>
+                <p>{getGroupLabelText(settingKey)}</p>
 
-        <div>
-          <label htmlFor="isShowControls">
-            <input
-              type="checkbox"
-              id="isShowControls"
-              name="isShowControls"
-              checked={rest.isShowControls}
-              onChange={onChangeSettings}
-            />
-            Show Video Player Controls
-          </label>
-
-          <label htmlFor="isPreload">
-            <input
-              type="checkbox"
-              id="isPreload"
-              name="isPreload"
-              checked={rest.isPreload}
-              onChange={onChangeSettings}
-            />
-            Preload Video
-          </label>
-
-          <label htmlFor="isLoop">
-            <input
-              type="checkbox"
-              id="isLoop"
-              name="isLoop"
-              checked={rest.isLoop}
-              onChange={onChangeSettings}
-            />
-            Loop Video
-          </label>
-
-          <label htmlFor="isMuted">
-            <input
-              type="checkbox"
-              id="isMuted"
-              name="isMuted"
-              checked={rest.isMuted}
-              onChange={onChangeSettings}
-            />
-            Mute Video
-          </label>
-        </div>
-
-        <div>
-          <label htmlFor="videoWidth">
-            <input
-              type="text"
-              id="videoWidth"
-              name="videoWidth"
-              value={rest.videoWidth}
-              onChange={onChangeSettings}
-            />
-            Width Of Video
-          </label>
-
-          <label htmlFor="videoHeight">
-            <input
-              type="text"
-              id="videoHeight"
-              name="videoHeight"
-              value={rest.videoHeight}
-              onChange={onChangeSettings}
-            />
-            Height Of Video
-          </label>
-        </div>
-
-        <div>
-          <label htmlFor="progressBarTrackColor">
-            <input
-              type="color"
-              id="progressBarTrackColor"
-              name="progressBarTrackColor"
-              value={rest.progressBarTrackColor}
-              onChange={onChangeSettings}
-            />
-            Color of Video Track
-          </label>
-
-          <label htmlFor="progressBarThumbColor">
-            <input
-              type="color"
-              id="progressBarThumbColor"
-              name="progressBarThumbColor"
-              value={rest.progressBarThumbColor}
-              onChange={onChangeSettings}
-            />
-            Color of Video Thumb
-          </label>
-
-          <label htmlFor="progressBarProgressColor">
-            <input
-              type="color"
-              id="progressBarProgressColor"
-              name="progressBarProgressColor"
-              value={rest.progressBarProgressColor}
-              onChange={onChangeSettings}
-            />
-            Color of Video Progress
-          </label>
-
-          <label htmlFor="progressBarBufferColor">
-            <input
-              type="color"
-              id="progressBarBufferColor"
-              name="progressBarBufferColor"
-              value={rest.progressBarBufferColor}
-              onChange={onChangeSettings}
-            />
-            Color of Video Buffer
-          </label>
+                <div>
+                  {settings.map((setting) => (
+                    <label htmlFor={setting.id} key={setting.id}>
+                      {setting.frontLabel && <span>{setting.frontLabel}</span>}
+                      <input
+                        type={setting.inputType}
+                        id={setting.id}
+                        name={setting.id}
+                        value={rest[setting.id]}
+                        checked={setting.inputType === 'checkbox' ? rest[setting.id] : undefined}
+                        onChange={onChangeSettings}
+                      />
+                      {setting.endLabel && <span>{setting.endLabel}</span>}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </form>
 
