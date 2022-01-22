@@ -9,6 +9,8 @@ import {
   PowerBtn,
   DialBtn,
   ScreenEffect,
+  Antenna,
+  Feet,
 } from './index.styled';
 
 function TvScreen() {
@@ -65,6 +67,8 @@ function TvScreen() {
 
   return (
     <TvCont>
+      <Antenna />
+
       <ScreenCont>
         <ScreenEffect isOn={isOn}>
           <VideoPlayer
@@ -102,6 +106,8 @@ function TvScreen() {
 
         <SpeakerCont />
       </ControlCont>
+
+      <Feet />
     </TvCont>
   );
 }

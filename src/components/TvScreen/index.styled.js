@@ -1,13 +1,13 @@
 import styled, { css, keyframes } from 'styled-components';
 
 export const TvCont = styled.div`
-  // width: 80vw;
-  // max-width: 880px;
-  // max-height: 490px;
-  // padding-bottom: 56%;
-  height: 80vh;
+  width: 80vw;
   max-width: 880px;
-  padding-left: 15%;
+  max-height: 490px;
+  padding-bottom: 48%;
+  // height: 80vh;
+  // max-width: 880px;
+  // padding-left: 15%;
   background-color: #252a3a;
   margin: 0 auto;
   border-radius: 30px;
@@ -170,4 +170,25 @@ export const ScreenEffect = styled.div`
   .video-cont {
     height: 100%;
   }
+`;
+
+export const Antenna = styled.div`
+  width: 7px;
+  height: 190px;
+  position: absolute;
+  top: -170px;
+  left: 30%;
+  border-radius: 10px;
+  background-color: #252a3a;
+  transform: rotate(50deg);
+  z-index: -1;
+`;
+
+export const Feet = styled.div`
+  width: 100%;
+  height: 80px;
+  background-image: linear-gradient(115deg, transparent 15%, #252a3a 15% 18%, transparent 18%),
+    linear-gradient(-115deg, transparent 15%, #252a3a 15% 18%, transparent 18%);
+  position: absolute;
+  bottom: -100px;
 `;

@@ -5,7 +5,8 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     font-family: Tahoma, sans-serif;
     letter-spacing: 0.5px;
-    background-color: #F3F6F6;
+    // background-color: #F3F6F6;
+    background-color: #dc675a;
     color: #333333;
   }
   
