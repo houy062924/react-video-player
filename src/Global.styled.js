@@ -32,19 +32,19 @@ export const GlobalStyle = createGlobalStyle`
     border: 1px solid #939595;
   }
   
-  button {
-    background-color: #bf4c08;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    font-size: 16px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    cursor: pointer;
+  // button {
+  //   background-color: #bf4c08;
+  //   color: white;
+  //   border: none;
+  //   border-radius: 4px;
+  //   padding: 8px 16px;
+  //   font-size: 16px;
+  //   font-weight: bold;
+  //   letter-spacing: 1px;
+  //   cursor: pointer;
 
-    &:hover {
-      background-color: #9D3E07;
-    }
-  }
+  //   &:hover {
+  //     background-color: #9D3E07;
+  //   }
+  // }
 `;

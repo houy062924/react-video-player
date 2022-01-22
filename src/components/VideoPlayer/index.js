@@ -1,4 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import React, {
+ useState, useEffect, useRef, useCallback, useImperativeHandle 
+} from 'react';
 import { IoPlayOutline, IoPauseOutline, IoScanOutline } from 'react-icons/io5';
 import { BsArrowCounterclockwise, BsArrowClockwise } from 'react-icons/bs';
 import { defaultProps } from '../../props';
@@ -14,7 +16,7 @@ import {
   ProgressBarText,
 } from './index.styled';
 
-function VideoPlayer(props) {
+const VideoPlayer = React.forwardRef((props, ref) => {
   const playerCont = useRef(null);
   const player = useRef(null);
 
@@ -24,6 +26,7 @@ function VideoPlayer(props) {
   const [videoDurationText, setVideoDuration] = useState('00:00');
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   const [bufferBarWidth, setBufferBarWidth] = useState(0);
+  const [videoVolume, setVideoVolume] = useState(1);
 
   useEffect(() => {
     const onCloseFullScreenState = () => {
@@ -178,6 +181,19 @@ function VideoPlayer(props) {
     setVideoProgressText(progressText);
   };
 
+  const onChangeVolume = (volume) => {
+    if (volume >= 0 && volume <= 1) {
+      player.current.volume = volume;
+      setVideoVolume(volume);
+    }
+  };
+
+  useImperativeHandle(ref, () => ({
+    onTogglePlay,
+    onSkipByDuration,
+    onChangeVolume,
+  }));
+
   return (
     <PlayerCont ref={playerCont} className={props.playerContClassName}>
       <PlayerVideo
@@ -186,6 +202,7 @@ function VideoPlayer(props) {
         width={!isFullScreen ? props.videoWidth : '100%'}
         height={!isFullScreen ? props.videoHeight : 'auto'}
         preload={props.isPreload.toString()}
+        volume={props.videoVolume}
         muted={props.isMuted}
         loop={props.isLoop}
         onClick={onTogglePlay}
@@ -247,7 +264,7 @@ function VideoPlayer(props) {
       )}
     </PlayerCont>
   );
-}
+});
 
 VideoPlayer.defaultProps = defaultProps;
 
