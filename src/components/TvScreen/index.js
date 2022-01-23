@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   IoPower,
   IoVolumeOff,
@@ -7,7 +7,6 @@ import {
   IoVolumeHigh,
   IoPlayForward,
   IoPlayBack,
-  IoClose,
 } from 'react-icons/io5';
 import VideoPlayer from '../VideoPlayer/index';
 import {
@@ -25,7 +24,6 @@ import {
   ScreenEffect,
   Antenna,
   Feet,
-  TooltipCont,
 } from './index.styled';
 
 const channels = [
