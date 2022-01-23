@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
+// TvScreen
 export const TvCont = styled.div`
   width: 775px;
   height: 480px;
@@ -79,6 +80,21 @@ export const SpeakerCont = styled.div`
   background: repeating-linear-gradient(#505563, #252a3a 8px, #f0edee 8px, #f0edee 10px);
 `;
 
+const isHintKeyframe = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  33% {
+    transform: rotate(5deg);
+  }
+  66% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-5deg);
+  }
+`;
+
 export const PowerBtn = styled.button`
   height: 30px;
   width: 5vw;
@@ -93,6 +109,11 @@ export const PowerBtn = styled.button`
   color: #f0edee;
   font-size: 18px;
   cursor: pointer;
+  animation: ${({ isAnimate }) =>
+    isAnimate &&
+    css`
+      ${isHintKeyframe} 200ms infinite
+    `};
 
   &:active {
     transform: translate(2px, 2px);
@@ -140,8 +161,8 @@ export const ChannelBtn = styled.button`
   ${({ isActive }) =>
     isActive &&
     `
-		background-color: #CA3B2B;
-	`};
+    background-color: #CA3B2B;
+  `};
 
   &:active {
     transform: translate(2px, 2px);

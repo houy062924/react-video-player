@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   IoPower,
   IoVolumeOff,
@@ -7,6 +7,7 @@ import {
   IoVolumeHigh,
   IoPlayForward,
   IoPlayBack,
+  IoClose,
 } from 'react-icons/io5';
 import VideoPlayer from '../VideoPlayer/index';
 import {
@@ -24,6 +25,7 @@ import {
   ScreenEffect,
   Antenna,
   Feet,
+  TooltipCont,
 } from './index.styled';
 
 const channels = [
@@ -44,9 +46,11 @@ const channels = [
 function TvScreen() {
   const videoPlayerRef = useRef(null);
 
+  const [isShowPowerBtnHint, setIsShowPowerBtnHint] = useState(true);
   const [isOn, setIsOn] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [trackedDialId, setTrackedDialId] = useState(undefined);
+  const [dialRotateDeg, setDialRotateDeg] = useState(360);
   const [volume, setVolume] = useState(1);
   const [channel, setChannel] = useState(channels[0]);
   const [autoPlay, setAutoPlay] = useState(false);
@@ -65,6 +69,10 @@ function TvScreen() {
   };
 
   const onToggleScreen = () => {
+    if (isShowPowerBtnHint) {
+      setIsShowPowerBtnHint(false);
+    }
+
     videoPlayerRef.current.onTogglePlay();
     setIsPlaying((prevValue) => !prevValue);
     setIsOn((prevValue) => !prevValue);
@@ -80,6 +88,7 @@ function TvScreen() {
 
     const rotateDegree = getRotateDegree(e);
     e.target.style.transform = `rotate(${rotateDegree}deg)`;
+    setDialRotateDeg(rotateDegree);
   };
 
   const onChangeVolume = (e) => {
@@ -139,7 +148,11 @@ function TvScreen() {
       </ScreenCont>
 
       <ControlCont>
-        <PowerBtn aria-label="power" type="button" onClick={onToggleScreen}>
+        <PowerBtn
+          aria-label="power"
+          type="button"
+          isAnimate={isShowPowerBtnHint}
+          onClick={onToggleScreen}>
           <IoPower />
         </PowerBtn>
 
@@ -152,10 +165,10 @@ function TvScreen() {
             onMouseMove={onTrackDialPosition}
             onMouseUp={onChangeVolume}
           />
-          {volume === 0 && <IoVolumeOff />}
-          {volume > 0 && volume <= 0.3 && <IoVolumeLow />}
-          {volume > 0.3 && volume <= 0.7 && <IoVolumeMedium />}
-          {volume > 0.7 && volume <= 1 && <IoVolumeHigh />}
+          {dialRotateDeg === 0 && <IoVolumeOff />}
+          {dialRotateDeg > 0 && dialRotateDeg <= 120 && <IoVolumeLow />}
+          {dialRotateDeg > 120 && dialRotateDeg <= 240 && <IoVolumeMedium />}
+          {dialRotateDeg > 240 && dialRotateDeg <= 360 && <IoVolumeHigh />}
         </DialBtnCont>
 
         <ChannelBtnCont>{renderChannelBtns()}</ChannelBtnCont>
