@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import TvScreen from './components/TvScreen';
 import VideoPlayer from './components/VideoPlayer/index';
 import VideoPlayerSettings from './components/VideoPlayerSettings/index';
 import { defaultProps } from './props';
 import { GlobalStyle } from './Global.styled';
-import './App.css';
+import { AppCont } from './App.styled';
 
 function App() {
   const [settings, setSettings] = useState(defaultProps);
@@ -42,9 +43,11 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <AppCont>
       <GlobalStyle />
-      <VideoPlayer
+
+      <TvScreen />
+      {/* <VideoPlayer
         {...settings}
         playerContClassName="player-cont"
         onPlayCallback={onPlay}
@@ -58,8 +61,8 @@ function App() {
         {...settings}
         onChangeSettings={onChangeSettings}
         onResetSettings={onResetSettings}
-      />
-    </div>
+      /> */}
+    </AppCont>
   );
 }
 
