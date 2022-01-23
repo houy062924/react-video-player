@@ -7,6 +7,7 @@ export const defaultProps = {
   isLoop: false,
   isMuted: false,
   videoVolume: 1,
+  autoPlay: true,
 
   // functionality callbacks
   onPlayCallback: undefined,

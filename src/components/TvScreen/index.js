@@ -1,17 +1,45 @@
 import React, { useState, useRef } from 'react';
+import {
+  IoPower,
+  IoVolumeOff,
+  IoVolumeLow,
+  IoVolumeMedium,
+  IoVolumeHigh,
+  IoPlayForward,
+  IoPlayBack,
+} from 'react-icons/io5';
 import VideoPlayer from '../VideoPlayer/index';
 import {
   TvCont,
   ScreenCont,
   ControlCont,
   DialBtnCont,
+  ChannelBtnCont,
+  ProgressBtnCont,
   SpeakerCont,
   PowerBtn,
+  ChannelBtn,
+  ProgressBtn,
   DialBtn,
   ScreenEffect,
   Antenna,
   Feet,
 } from './index.styled';
+
+const channels = [
+  {
+    name: 'harryPotter',
+    url: 'https://tra-ww000-cp.akamaized.net/HGO-TW-001-A1881/videos/misc/mp4/trailer/HGO-TW-001-A1881-Z05-406p-800k.mp4',
+  },
+  {
+    name: 'goldLeaf',
+    url: 'https://tra-ww000-cp.akamaized.net/PTS-TW-D0006-01/videos/misc/mp4/trailer/PTS-TW-D0006-01-Z01-406p-800k.mp4',
+  },
+  {
+    name: 'dune',
+    url: 'https://tra-ww000-cp.akamaized.net/HGO-TW-001-A1783/videos/misc/mp4/trailer/HGO-TW-001-A1783-Z01-406p-800k.mp4',
+  },
+];
 
 function TvScreen() {
   const videoPlayerRef = useRef(null);
@@ -20,6 +48,8 @@ function TvScreen() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [trackedDialId, setTrackedDialId] = useState(undefined);
   const [volume, setVolume] = useState(1);
+  const [channel, setChannel] = useState(channels[0]);
+  const [autoPlay, setAutoPlay] = useState(false);
 
   const getRotateDegree = (e) => {
     const { pageX, pageY } = e;
@@ -61,9 +91,33 @@ function TvScreen() {
     setTrackedDialId(undefined);
   };
 
-  const onChangeProgress = () => {
-    setTrackedDialId(undefined);
+  const onChangeChannel = (channelObj) => {
+    if (!isOn) return;
+
+    setAutoPlay(true);
+    setChannel(channelObj);
   };
+
+  const onSkipByDuration = (skipBy) => {
+    if (!isOn) return;
+    videoPlayerRef.current.onSkipByDuration(skipBy);
+  };
+
+  const renderChannelBtns = () => (
+    <>
+      {channels.map((channelObj) => (
+        <ChannelBtn
+          aria-label="channel"
+          key={channelObj.name}
+          type="button"
+          name="channel"
+          id={channelObj.name}
+          isActive={channel.name === channelObj.name}
+          onClick={() => onChangeChannel(channelObj)}
+        />
+      ))}
+    </>
+  );
 
   return (
     <TvCont>
@@ -77,32 +131,55 @@ function TvScreen() {
             isPlaying={isPlaying}
             isShowControls={false}
             videoVolume={volume}
+            url={channel.url}
+            autoPlay={autoPlay}
             playerContClassName="video-cont"
           />
         </ScreenEffect>
       </ScreenCont>
 
       <ControlCont>
-        <PowerBtn aria-label="power" type="button" onClick={onToggleScreen} />
+        <PowerBtn aria-label="power" type="button" onClick={onToggleScreen}>
+          <IoPower />
+        </PowerBtn>
 
         <DialBtnCont>
           <DialBtn
-            aria-label="dial"
+            aria-label="volume dial"
             type="button"
             id="volume"
             onMouseDown={onStartTrackDialPosition}
             onMouseMove={onTrackDialPosition}
             onMouseUp={onChangeVolume}
           />
-          <DialBtn
-            aria-label="dial"
-            type="button"
-            id="progress"
-            onMouseDown={onStartTrackDialPosition}
-            onMouseMove={onTrackDialPosition}
-            onMouseUp={onChangeProgress}
-          />
+          {volume === 0 && <IoVolumeOff />}
+          {volume > 0 && volume <= 0.3 && <IoVolumeLow />}
+          {volume > 0.3 && volume <= 0.7 && <IoVolumeMedium />}
+          {volume > 0.7 && volume <= 1 && <IoVolumeHigh />}
         </DialBtnCont>
+
+        <ChannelBtnCont>{renderChannelBtns()}</ChannelBtnCont>
+
+        <ProgressBtnCont>
+          <ProgressBtn
+            aria-label="backwards"
+            type="button"
+            name="channel"
+            id="backwards"
+            onClick={() => onSkipByDuration(-10)}
+          >
+            <IoPlayBack />
+          </ProgressBtn>
+
+          <ProgressBtn
+            aria-label="forwards"
+            type="button"
+            name="channel"
+            id="forwards"
+            onClick={() => onSkipByDuration(10)}>
+            <IoPlayForward />
+          </ProgressBtn>
+        </ProgressBtnCont>
 
         <SpeakerCont />
       </ControlCont>

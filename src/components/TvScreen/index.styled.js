@@ -1,13 +1,8 @@
 import styled, { css, keyframes } from 'styled-components';
 
 export const TvCont = styled.div`
-  width: 80vw;
-  max-width: 880px;
-  max-height: 490px;
-  padding-bottom: 48%;
-  // height: 80vh;
-  // max-width: 880px;
-  // padding-left: 15%;
+  width: 775px;
+  height: 480px;
   background-color: #252a3a;
   margin: 0 auto;
   border-radius: 30px;
@@ -36,16 +31,46 @@ export const ControlCont = styled.div`
   right: 0;
   display: flex;
   flex-direction: column;
-  padding: 15px 0 30px 0;
+  padding: 15px 0;
   box-sizing: border-box;
 `;
 
-export const DialBtnCont = styled.div`
-  flex: 0 0 auto;
+export const ChannelBtnCont = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin: 15px 0;
+  justify-content: space-evenly;
+  margin: 8px;
+`;
+
+export const ProgressBtnCont = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px;
+`;
+
+export const DialBtnCont = styled.div`
+  height: 10vw;
+  width: 10vw;
+  border: none;
+  border-radius: 50%;
+  position: relative;
+  margin: 20px auto 12px auto;
+  padding: 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  box-shadow: 2px 2px 0px #505563;
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ca3b2b;
+    border-radius: 50%;
+    padding: 4px;
+    fill: #f0edee;
+  }
 `;
 
 export const SpeakerCont = styled.div`
@@ -61,23 +86,40 @@ export const PowerBtn = styled.button`
   border: none;
   margin-left: auto;
   display: block;
+  box-shadow: 2px 2px 0px #505563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f0edee;
+  font-size: 18px;
   cursor: pointer;
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+
+  svg {
+    stroke-width: 15px;
+  }
 `;
 
 export const DialBtn = styled.button`
-  height: 10vw;
-  width: 10vw;
+  height: 100%;
+  width: 100%;
   border-radius: 50%;
   border: none;
-  margin: 10px;
-  position: relative;
   background-color: #f0edee;
+
+  &:active::after {
+    cursor: grabbing;
+  }
 
   &::after {
     content: '';
     width: 10px;
     height: 5vw;
-    background-color: #dc675a;
+    background-color: #ca3b2b;
     position: absolute;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -85,6 +127,43 @@ export const DialBtn = styled.button`
     top: 0%;
     transform: translate(-50%, 0);
     cursor: grab;
+  }
+`;
+
+export const ChannelBtn = styled.button`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 2px 2px 0px #505563;
+  cursor: pointer;
+  ${({ isActive }) =>
+    isActive &&
+    `
+		background-color: #CA3B2B;
+	`};
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+`;
+
+export const ProgressBtn = styled.button`
+  flex-basis: 60px;
+  height: 25px;
+  border-radius: 2px;
+  border: none;
+  box-shadow: 2px 2px 0px #505563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #252a3a;
+  cursor: pointer;
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
   }
 `;
 
@@ -182,6 +261,17 @@ export const Antenna = styled.div`
   background-color: #252a3a;
   transform: rotate(50deg);
   z-index: -1;
+
+  &::after {
+    content: '';
+    width: 15px;
+    height: 10px;
+    background-color: #252a3a;
+    top: 0;
+    left: -4px;
+    position: absolute;
+    border-radius: 2px;
+  }
 `;
 
 export const Feet = styled.div`

@@ -47,7 +47,7 @@ const VideoPlayer = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     const onResetDefaultState = () => {
-      setIsPlaying(false);
+      // setIsPlaying(false);
       setIsFullScreen(false);
       setVideoProgressText('00:00');
       setVideoDuration('00:00');
@@ -60,6 +60,10 @@ const VideoPlayer = React.forwardRef((props, ref) => {
       onResetDefaultState();
     }
   }, [props.url]);
+
+  useEffect(() => {
+    setIsPlaying(props.isPlaying);
+  }, [props.isPlaying]);
 
   const onLoadVideo = () => {
     const duration = getTimeAsMinSec(player.current.duration);
@@ -205,7 +209,8 @@ const VideoPlayer = React.forwardRef((props, ref) => {
         volume={props.videoVolume}
         muted={props.isMuted}
         loop={props.isLoop}
-        onClick={onTogglePlay}
+        autoPlay={props.autoPlay}
+        onClick={props.isShowControls ? onTogglePlay : null}
         onLoadedMetadata={onLoadVideo}
         onTimeUpdate={onUpdateProgressBar}>
         <source src={props.url} type="video/mp4" />
